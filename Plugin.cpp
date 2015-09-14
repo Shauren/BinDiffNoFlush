@@ -37,7 +37,7 @@ BOOL WINAPI FlushFileBuffersHook(HANDLE file)
     return FlushFileBuffersTrampoline(file);
 }
 
-int IDAP_init()
+int idaapi IDAP_init()
 {
     Kernel32 = LoadLibrary("kernel32.dll");
     if (!Kernel32)
@@ -74,7 +74,7 @@ int IDAP_init()
     return PLUGIN_KEEP;
 }
 
-void IDAP_term()
+void idaapi IDAP_term()
 {
     if (FlushFileBuffersPtr)
     {
@@ -88,11 +88,13 @@ void IDAP_term()
         FreeLibrary(Kernel32);
 }
 
-void IDAP_run(int) { }
+void idaapi IDAP_run(int)
+{
+}
 
 char const IDAP_name[] = "BinDiffNoFlush";
 
-plugin_t PLUGIN =
+plugin_t __declspec(dllexport) PLUGIN =
 {
     IDP_INTERFACE_VERSION,  // IDA version plug-in is written for
     PLUGIN_HIDE,            // Flags
